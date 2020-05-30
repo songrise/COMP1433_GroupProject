@@ -33,6 +33,7 @@ sexProb[2] = (length(which(passengerData[5] == "female")) + Laplace) / passenger
 ######end of sex prob calculation######
 
 ######age probability#######
+##TODO I shall use Gaussian distribution
 ageProb=rep(0, 9)
 for (i in 0:7) {#convert into discreate data
     for (j in which(passengerData[6] > i*10)) {
