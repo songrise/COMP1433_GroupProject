@@ -42,7 +42,6 @@ sexProb[2] = ((sexProb[2]+1) / length(which(passengerData[5] == "female")))
 
 ######age probability#######
 #todo this is floating data
-ageProb=0
 ######end of age prob calculation######
 
 ######sibSp probability#######
@@ -230,15 +229,16 @@ for (i in 1:testData.row) {
   #end of attribute loading
   #predict live prob.
   p = (pclassProbAlive[pclass]*sexProbAlive[sex]*sibProbAlive[sibSp]*parchProbAlive[parch]*embarkedProbAlive[embarked]*aliveProb)/(pclassProb[pclass]*sexProb[sex]*parchProb[parch]*sibProb[sibSp]*embarkedProb[embarked])
-  if (p <= 0.5) {# if predicted probability of alive <= 0.5
-    Survived[i] = 0
-  }
-  else {
-    Survived[i] = 1
-  }
+  Survived[i] = p
+  # if (p <= 0.5) {# if predicted probability of alive <= 0.5
+  #   Survived[i] = 0
+  # }
+  # else {
+  #   Survived[i] = 1
+  # }
 }
 
 ###########Export result############
-passengerID = testData[1]
-ans = data.frame(passengerID,Survived)
-write.table(ans, file = "../Data/prediction.csv", quote = FALSE, sep = ",",row.names=FALSE)
+# passengerID = testData[1]
+# ans = data.frame(passengerID,Survived)
+# write.table(ans, file = "../Data/prediction.csv", quote = FALSE, sep = ",",row.names=FALSE)
