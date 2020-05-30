@@ -11,7 +11,10 @@ passengerData.column = ncol(passengerData)
 #####alive probability######
 aliveProb = length(which(passengerData[2] == 1))/passengerData.row
 #######end of alive prob ########
+
+######Laplace Smoothing######
 Laplace = 1
+
 ######pclass probability#########
 pclassProb = rep(0,3)
 
@@ -90,7 +93,7 @@ for (i in which(passengerData[2]==1)) { # for index in alive
 }
 for (i in 1:3)
 {
-  # +1 for Laplace Smoothing
+  
   pclassProbAlive[i] = ((pclassProbAlive[i]+Laplace) / passengerData.row) / aliveProb #conditional prob.
 }
 
@@ -106,7 +109,7 @@ for (i in which(passengerData[2]==1)) {
     sexProbAlive[2] =  sexProbAlive[2] + 1
   }
 }
-# +1 for Laplace Smoothing
+
 sexProbAlive[1] = ((sexProbAlive[1]+Laplace) / passengerData.row) / aliveProb
 sexProbAlive[2] = ((sexProbAlive[2]+Laplace) / passengerData.row) / aliveProb
 ######end of sex prob calculation######
@@ -134,7 +137,7 @@ for (i in which(passengerData[2]==1)) {
 }
 
 for (i in 1: 9){
-  # +1 for Laplace Smoothing
+  
   sibProbAlive[i] = ((sibProbAlive[i]+Laplace) /  passengerData.row) / aliveProb
 }
 ######end of sibSp prob calculation######
@@ -147,7 +150,7 @@ for (i in which(passengerData[2]==1)) {
 }
 
 for (i in 1: 7){
-  # +1 for Laplace Smoothing
+  
   parchProbAlive[i] = ((parchProbAlive[i]+Laplace) / passengerData.row) / aliveProb
 }
 parchProbAlive[8] = 1
@@ -196,7 +199,7 @@ for (i in 1:testData.row) {
   age = 9
   for (j in 0:7) {
     if (is.na(testData[i,6])) {
-        age = 9
+        age = 9 # NA, ignore this attribute
         }
 
     if ((testData[i,2]==1) && (testData[i,6] > j*10) && (testData[i,6] <= (j+1)*10)) {
@@ -215,7 +218,7 @@ for (i in 1:testData.row) {
   sibSp = testData[i,6]+1
   parch = testData[i,7]+1
   if (parch > 6) { #not exists in learning data
-    parch = 8 # ignore this attribute
+    parch = 8 # NA, ignore this attribute
   }
      
 
@@ -232,7 +235,7 @@ for (i in 1:testData.row) {
   #end of attribute loading
   #predict live prob.
   p = (pclassProbAlive[pclass]*sexProbAlive[sex]*sibProbAlive[sibSp]*ageProbAlive[age]*parchProbAlive[parch]*embarkedProbAlive[embarked]*aliveProb)/(pclassProb[pclass]*sexProb[sex]*ageProb[age]*parchProb[parch]*sibProb[sibSp]*embarkedProb[embarked])
-#   Survived[i] = p
+  #Survived[i] = p
   if (p <= 0.5) {# if predicted probability of alive <= 0.5
     Survived[i] = 0
   }
