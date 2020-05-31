@@ -8,8 +8,8 @@ library(dplyr)
 library(stringr)
 
 # Firstly, load and combine.
-train <- read.csv("train.csv")
-test <- read.csv("test.csv")
+train <- read.csv("../Data/train.csv")
+test <- read.csv("../Data/test.csv")
 data <- bind_rows(train, test)
 train.row <- 1:nrow(train)
 test.row <- (1 + nrow(train)):(nrow(train) + nrow(test))

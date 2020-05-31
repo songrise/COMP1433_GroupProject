@@ -195,7 +195,7 @@ for (i in which(trainData$Survived==1)) {
     embarkedProbAlive[3] = embarkedProbAlive[3] + 1
   }
 }
-# +1 for Laplace Smoothing
+
 embarkedProbAlive[1] = ((embarkedProbAlive[1]+Laplace) /trainData.row) / aliveProb
 embarkedProbAlive[2] = ((embarkedProbAlive[2]+Laplace) / trainData.row) / aliveProb
 embarkedProbAlive[3] = ((embarkedProbAlive[3]+Laplace) / trainData.row) / aliveProb
@@ -218,38 +218,39 @@ testData.row = nrow(testData)
 Survived = rep(0,testData.row)
 for (i in 1:testData.row) {
     ######loading attributes#####
-    pclass = testData[i,2]
+    pclass = testData$Pclass[i]
+
     age = 9
     for (j in 0:7) {
-    if (is.na(testData[i,5])) {
+    if (is.na(testData$Age[i])) {
         age = 9 # NA, ignore this attribute (ageProb[9] == 1, ageProbAlive[9] == 1)
         }
 
-    else if ((testData[i,5] > j*10) && (testData[i,5] <= (j+1)*10)) {
+    else if ((testData$Age[i] > j*10) && (testData$Age[i] <= (j+1)*10)) {
         #j*10 < age < (j+1)*10
         age = j+1
         }
     }
 
-    if (as.character(testData[i,4]) == "male") {
+    if (as.character(testData$Sex[i]) == "male") {
         sex = 1
     }
     else {
         sex = 2
     }
 
-    SibSp = testData[i,6]+1
-    parch = testData[i,7]+1
+    SibSp = testData$SibSp[i]+1
+    parch = testData$Parch[i]+1
     if (parch > 6) { #not exists in learning data
         parch = 8 # NA, ignore this attribute(parchProb[8] == 1, parchProbAlive[8] == 1)
     }
 
     fare = 6
     for (j in 0:5) {
-        if (is.na(testData[i,9])) {
+        if (is.na(testData$Fare[i])) {
             fare = 7 # NA, ignore this attribute (fareProb[7] == 1, fareProbAlive[7] == 1)
         }
-        else if ((testData[i,9] > j*100) && (testData[i,9] <= (j+1)*100)) {
+        else if ((testData$Fare[i] > j*100) && (testData$Fare[i] <= (j+1)*100)) {
             #j*100 < fare < (j+1)*100
             fare = j+1
         }
@@ -269,7 +270,7 @@ for (i in 1:testData.row) {
   ######end of attribute loading#####
   #predict live prob. (Naive Bayes formula)
   p = (pclassProbAlive[pclass]*sexProbAlive[sex]*sibProbAlive[SibSp]*ageProbAlive[age]*parchProbAlive[parch]*fareProbAlive[fare]*embarkedProbAlive[embarked]*aliveProb)/(pclassProb[pclass]*sexProb[sex]*ageProb[age]*parchProb[parch]*fareProb[fare]*sibProb[SibSp]*embarkedProb[embarked])
-#   Survived[i] = fare #This is for testing
+  #  Survived[i] = fare #This is for testing
   if (p <= 0.5) {# if predicted probability of survive <= 0.5
     Survived[i] = 0
   }
