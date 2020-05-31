@@ -23,8 +23,7 @@ Laplace = 1
 ######pclass probability#########
 pclassProb = rep(0,3)
 
-for (i in 1:3)
-{
+for (i in 1:3){
   pclassProb[i] = (length(which(trainData$Pclass == i)) + Laplace) / trainData.row
 }
 
@@ -65,7 +64,6 @@ for (i in 1: 9){
 parchProb=rep(0,8)#0-6, last one is reserverd for exceptions
 
 for (i in 1: 7){
-
   parchProb[i] = (length(which(trainData$Parch == i-1)) + Laplace) / trainData.row
 }
 parchProb[8] = 1
@@ -107,7 +105,6 @@ for (i in which(trainData$Survived==1)) { # for index in alive
 }
 for (i in 1:3)
 {
-  
   pclassProbAlive[i] = ((pclassProbAlive[i]+Laplace) / trainData.row) / aliveProb #conditional prob.
 }
 ######end of pclass prob calculation######
@@ -269,7 +266,8 @@ for (i in 1:testData.row) {
 
   ######end of attribute loading#####
   #predict live prob. (Naive Bayes formula)
-  p = (pclassProbAlive[pclass]*sexProbAlive[sex]*sibProbAlive[SibSp]*ageProbAlive[age]*parchProbAlive[parch]*fareProbAlive[fare]*embarkedProbAlive[embarked]*aliveProb)/(pclassProb[pclass]*sexProb[sex]*ageProb[age]*parchProb[parch]*fareProb[fare]*sibProb[SibSp]*embarkedProb[embarked])
+  p = (pclassProbAlive[pclass]*sexProbAlive[sex]*sibProbAlive[SibSp]*ageProbAlive[age]*parchProbAlive[parch]*fareProbAlive[fare]*embarkedProbAlive[embarked]*aliveProb)/
+      (pclassProb[pclass]*sexProb[sex]*ageProb[age]*parchProb[parch]*fareProb[fare]*sibProb[SibSp]*embarkedProb[embarked])
   #  Survived[i] = fare #This is for testing
   if (p <= 0.5) {# if predicted probability of survive <= 0.5
     Survived[i] = 0
