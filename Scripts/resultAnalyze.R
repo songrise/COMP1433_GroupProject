@@ -76,7 +76,8 @@ FareGraph = ggplot(testData, aes(x = Fare, fill = Status))+
   theme_minimal()
 
 
-####Show Result#######
+#####Show Result#######
+
 #sexGraph
 #ageGraph
 #FareGraph

@@ -8,26 +8,29 @@ library(dplyr)
 library(stringr)
 
 # Firstly, load and combine.
-train <- read.csv("../Data/train.csv")
-test <- read.csv("../Data/test.csv")
+train <- read.csv("train.csv")
+test <- read.csv("test.csv")
 data <- bind_rows(train, test)
 train.row <- 1:nrow(train)
 test.row <- (1 + nrow(train)):(nrow(train) + nrow(test))
-# show
+# Data Preview
 str(data)           
 
 # Pclass
 data$Survived <- factor(data$Survived)
-ggplot(data = data[1:nrow(train),], mapping = aes(x = Pclass, y = ..count.., fill=Survived)) + 
+ggplot(data = data[1:nrow(train),], mapping = aes(x = Pclass, 
+                                      y = ..count.., fill=Survived)) + 
   geom_bar(stat = "count", position='dodge') + 
   xlab('Pclass') + 
   ylab('Count') + 
   ggtitle('How Pclass impact survivor') + 
-  scale_fill_manual(values=c("#FF0000", "#00FF00")) +
-  geom_text(stat = "count", aes(label = ..count..), position=position_dodge(width=1), , vjust=-0.5) + 
+  geom_text(stat = "count", aes(label = ..count..), 
+            position=position_dodge(width=1), , vjust=-0.5) + 
   theme(plot.title = element_text(hjust = 0.5), legend.position="bottom")
-WOETable(X=factor(data$Pclass[1:nrow(train)]), Y=data$Survived[1:nrow(train)])
-IV(X=factor(data$Pclass[1:nrow(train)]), Y=data$Survived[1:nrow(train)])
+WOETable(X=factor(data$Pclass[1:nrow(train)]), 
+         Y=data$Survived[1:nrow(train)])
+IV(X=factor(data$Pclass[1:nrow(train)]), 
+   Y=data$Survived[1:nrow(train)])
 
 # Title
 data$Title <- sapply(data$Name, FUN=function(x) {strsplit(x, split='[,.]')[[1]][2]})
@@ -53,7 +56,7 @@ ggplot(data = data[1:nrow(train),], mapping = aes(x = Sex, y = ..count.., fill=S
   geom_bar(stat = 'count', position='dodge') + 
   xlab('Sex') + 
   ylab('Count') + 
-  ggtitle('How Sex impact survivo') + 
+  ggtitle('How Sex impact survivor') + 
   geom_text(stat = "count", aes(label = ..count..), position=position_dodge(width=1), , vjust=-0.5) + 
   theme(plot.title = element_text(hjust = 0.5), legend.position="bottom")
 
@@ -61,7 +64,7 @@ WOETable(X=data$Sex[1:nrow(train)], Y=data$Survived[1:nrow(train)])
 IV(X=data$Sex[1:nrow(train)], Y=data$Survived[1:nrow(train)])
 
 # Age (age<18 , age>=18)
-ggplot(data = data[(!is.na(data$Age)) & row(data[, 'Age']) <= 891, ], aes(x = Age, color=Survived)) + 
+ggplot(data = data[(!is.na(data$Age)) & row(data['Age']) <= 891, ], aes(x = Age, color=Survived)) + 
   geom_line(aes(label=..count..), stat = 'bin', binwidth=5)  + 
   labs(title = "How Age impact survivor", x = "Age", y = "Count", fill = "Survived")
 
@@ -114,7 +117,7 @@ WOETable(X=data$TicketCount[1:nrow(train)], Y=data$Survived[1:nrow(train)])
 IV(X=data$TicketCount[1:nrow(train)], Y=data$Survived[1:nrow(train)])
 
 # Fair
-ggplot(data = data[(!is.na(data$Fare)) & row(data[, 'Fare']) <= 891, ], aes(x = Fare, color=Survived)) + 
+ggplot(data = data[(!is.na(data$Fare)) & row(data['Fare']) <= 891, ], aes(x = Fare, color=Survived)) + 
   geom_line(aes(label=..count..), stat = 'bin', binwidth=10)  + 
   labs(title = "How Fare impact survivor", x = "Fare", y = "Count", fill = "Survived")
 
