@@ -102,7 +102,7 @@ embarkedProb[3] = (length(which(trainData$Embarked == "S"))) / trainData.row
 
 ######pclass probability#########
 pclassProbAlive = rep(0,3)
-for (i in which(trainData[2]==1)) { # for index in alive 
+for (i in which(trainData$Survived==1)) { # for index in alive 
   pclassProbAlive[trainData[i,3]] = pclassProbAlive[trainData[i,3]] + 1
 }
 for (i in 1:3)
@@ -114,7 +114,7 @@ for (i in 1:3)
 
 ######sex probability#######
 sexProbAlive = rep(0,2) #1 for male, 2 for female
-for (i in which(trainData[2]==1)) {
+for (i in which(trainData$Survived==1)) {
   if (as.character(trainData[i,5]) == "male") {
     sexProbAlive[1] = sexProbAlive[1] + 1
   }
@@ -143,7 +143,7 @@ ageProbAlive[9] = 1 # reserved for NA
 
 ######SibSp probability#######
 sibProbAlive=rep(0,9) #0-8
-for (i in which(trainData[2]==1)) {
+for (i in which(trainData$Survived==1)) {
   sibProbAlive[trainData[i,7]+1] = sibProbAlive[trainData[i,7]+1] + 1
 }
 
@@ -156,7 +156,7 @@ for (i in 1: 9){
 
 #########parch Probability##########
 parchProbAlive=rep(0,8)#0-6, last one is reserverd for exceptions
-for (i in which(trainData[2]==1)) {
+for (i in which(trainData$Survived==1)) {
   parchProbAlive[trainData[i,8]+1] = parchProbAlive[trainData[i,8]+1] + 1
 }
 
@@ -182,7 +182,7 @@ fareProbAlive[7] = 1 #reserved for NA
 
 #########embarked Probability##########
 embarkedProbAlive = rep(0,3) #C,Q,S
-for (i in which(trainData[2]==1)) {
+for (i in which(trainData$Survived==1)) {
   if (as.character(trainData[i,12]) == "C") {
     embarkedProbAlive[1] = embarkedProbAlive[1] + 1
   }
