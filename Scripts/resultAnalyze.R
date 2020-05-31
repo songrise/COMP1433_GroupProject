@@ -1,3 +1,5 @@
+###Ruixiang JIANG###
+
 #######Loading Data#######
 prediction = read.csv("../Data/prediction.csv")
 testData = read.csv("../Data/test.csv")
