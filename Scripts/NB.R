@@ -42,7 +42,7 @@ sexProb[2] = (length(which(trainData$Sex == "female")) + Laplace) / trainData.ro
 ageProb=rep(0, 9)
 for (i in 0:7) {#convert into discreate data
     for (j in which(trainData$Age > i*10)) {
-        if (trainData[j,6] <= (i+1)*10) { 
+        if (trainData$Age[j] <= (i+1)*10) { 
            #i*10< age < (i+1)*10
            ageProb[i+1] = ageProb[i+1] + 1
         }
@@ -76,7 +76,7 @@ fareProb = rep(0, 7)
 for (i in 0:5) { #convert into discreate data
 
     for (j in which(trainData$Fare > i*100)) {
-        if (trainData[j,10] <= (i+1)*100) { 
+        if (trainData$Fare[j] <= (i+1)*100) { 
            #i*100< fare < (i+1)*100
            fareProb[i+1] = fareProb[i+1] + 1
         }
@@ -103,7 +103,7 @@ embarkedProb[3] = (length(which(trainData$Embarked == "S"))) / trainData.row
 ######pclass probability#########
 pclassProbAlive = rep(0,3)
 for (i in which(trainData$Survived==1)) { # for index in alive 
-  pclassProbAlive[trainData[i,3]] = pclassProbAlive[trainData[i,3]] + 1
+  pclassProbAlive[trainData$Pclass[i]] = pclassProbAlive[trainData$Pclass[i]] + 1
 }
 for (i in 1:3)
 {
@@ -131,7 +131,7 @@ sexProbAlive[2] = ((sexProbAlive[2]+Laplace) / trainData.row) / aliveProb
 ageProbAlive=rep(0,9)
 for (i in 0:7) {
     for (j in which(trainData$Age>0)) {
-        if ((trainData[j,2]==1) &&(trainData[j,6] > i*10) && (trainData[j,6] <= (i+1)*10)) {
+        if ((trainData[j,2]==1) &&(trainData$Age[j] > i*10) && (trainData$Age[j] <= (i+1)*10)) {
             #i*10< age < (i+1)*10
             ageProbAlive[i+1] = ageProbAlive[i+1] + 1
             }
@@ -144,7 +144,7 @@ ageProbAlive[9] = 1 # reserved for NA
 ######SibSp probability#######
 sibProbAlive=rep(0,9) #0-8
 for (i in which(trainData$Survived==1)) {
-  sibProbAlive[trainData[i,7]+1] = sibProbAlive[trainData[i,7]+1] + 1
+  sibProbAlive[trainData$SibSp[i]+1] = sibProbAlive[trainData$SibSp[i]+1] + 1
 }
 
 for (i in 1: 9){
@@ -157,7 +157,7 @@ for (i in 1: 9){
 #########parch Probability##########
 parchProbAlive=rep(0,8)#0-6, last one is reserverd for exceptions
 for (i in which(trainData$Survived==1)) {
-  parchProbAlive[trainData[i,8]+1] = parchProbAlive[trainData[i,8]+1] + 1
+  parchProbAlive[trainData$Parch[i]+1] = parchProbAlive[trainData$Parch[i]+1] + 1
 }
 
 for (i in 1: 7){
@@ -170,7 +170,7 @@ parchProbAlive[8] = 1
 fareProbAlive = rep(0, 7)
 for (i in 0:5) {
     for (j in which(!is.na(trainData$Fare))) {
-        if ((trainData[j,2] == 1) && (trainData[j,10] > i*100) && (trainData[j,10] <= (i+1)*100)) {
+        if ((trainData[j,2] == 1) && (trainData$Fare[j] > i*100) && (trainData$Fare[j] <= (i+1)*100)) {
             #i*100< fare < (i+1)*100
             fareProbAlive[i+1] = fareProbAlive[i+1] + 1
         }
@@ -257,10 +257,10 @@ for (i in 1:testData.row) {
     }
   
   
-    if (as.character(testData[i,11]) == "C") {
+    if (as.character(testData$Embarked[i]) == "C") {
         embarked = 1
     }
-    else if (as.character(testData[i,11]) == "Q") {
+    else if (as.character(testData$Embarked[i]) == "Q") {
         embarked = 2
     }
     else {
